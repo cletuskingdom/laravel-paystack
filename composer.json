@@ -1,0 +1,55 @@
+{
+    "name": "cletuskingdom/laravel-paystack",
+    "description": "Description of your package",
+    "keywords": [
+        "laravel",
+        "payment",
+        "api",
+        "php",
+        "github",
+        "laravel",
+        "Open Source",
+        "payments",
+        "subscription",
+        "paystack",
+        "paystack.co",
+        "laravel 12"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cletus Kingdom",
+            "email": "cletuskingdom@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^9.0|^10.0|^11.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "orchestra/testbench": "^7.0|^8.0|^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "CletusKingdom\\Paystack\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CletusKingdom\\Paystack\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CletusKingdom\\Paystack\\PaystackServiceProvider"
+            ],
+            "aliases": {
+                "Paystack": "CletusKingdom\\Paystack\\Facades\\Paystack"
+            }
+        }
+    }
+}
