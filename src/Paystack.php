@@ -72,11 +72,6 @@ class Paystack
         return $this->performRequest('GET', "transaction/verify/{$reference}");
     }
 
-    /**
-     * Generate a unique transaction reference
-     * @param string|null $prefix
-     * @return string
-     */
     public function generateReference($prefix = null)
     {
         $reference = Str::random(12);
@@ -86,5 +81,66 @@ class Paystack
         }
 
         return $reference;
+    }
+    
+    public function redirectToGateway()
+    {
+        $data = [
+            "amount" => request()->amount,
+            "email" => request()->email,
+            "reference" => $this->generateReference(),
+            "callback_url" => request()->callback_url,
+            // Add other fields as needed
+        ];
+
+        $response = $this->makePayment($data);
+
+        // If the API call was successful, redirect the user
+        if ($response['status']) {
+            return redirect()->away($response['data']['authorization_url']);
+        }
+
+        return back()->withErrors(['message' => 'Paystack is currently unavailable.']);
+    }
+
+    public function getAllPlans()
+    {
+        return $this->performRequest('GET', '/plan');
+    }
+
+    public function createPlan(array $data)
+    {
+        return $this->performRequest('POST', '/plan', $data);
+    }
+
+    public function createCustomer(array $data)
+    {
+        return $this->performRequest('POST', '/customer', $data);
+    }
+
+    public function getPaymentData()
+    {
+        $reference = request()->query('reference');
+
+        if (!$reference) {
+            return [
+                'status' => false,
+                'message' => 'No transaction reference found in the request.'
+            ];
+        }
+
+        return $this->verifyTransaction($reference);
+    }
+
+    public function getAllTransactions() {
+        return $this->performRequest('GET', 'transaction');
+    }
+
+    public function getTransaction($id) {
+        return $this->performRequest('GET', "transaction/{$id}");
+    }
+
+    public function isSuccessful($response) {
+        return isset($response['status']) && $response['status'] === true;
     }
 }
