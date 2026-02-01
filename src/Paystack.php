@@ -12,14 +12,21 @@ use CletusKingdom\Paystack\Exceptions\ValidationException;
 class Paystack
 {
     protected Client $client;
-    protected string $secretKey;
-    protected string $baseUrl;
+    protected ?string $secretKey = null;
+    protected ?string $baseUrl = null;
     protected ?array $lastResponse = null;
 
     public function __construct()
     {
         $this->secretKey = Config::get('paystack.secretKey');
         $this->baseUrl = Config::get('paystack.paymentUrl', 'https://api.paystack.co/');
+
+        // Validate that secret key is configured
+        if (empty($this->secretKey)) {
+            throw new PaystackException(
+                'Paystack secret key not configured. Please set PAYSTACK_SECRET_KEY in your .env file.'
+            );
+        }
 
         $this->client = new Client([
             'base_uri' => rtrim($this->baseUrl, '/') . '/',
@@ -28,7 +35,7 @@ class Paystack
                 'Content-Type'  => 'application/json',
                 'Accept'        => 'application/json',
             ],
-            'http_errors' => false, // Handle errors manually
+            'http_errors' => false,
         ]);
     }
 
