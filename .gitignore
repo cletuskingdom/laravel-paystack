@@ -3,3 +3,6 @@ vendor
 .DS_Store
 composer.lock
 .idea
+.env
+.env.testing
+.phpunit.result.cache
