@@ -3,7 +3,7 @@
 Install via Composer:
 
 ```bash
-composer require cletuskingdom/laravel-paystack-sdk
+composer require cletuskingdom/laravel-paystack
 ```
 
 Publish the config file:
